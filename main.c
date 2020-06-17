@@ -22,5 +22,7 @@ int main(int argc, char ** argv) {
      printf("Display returned code %d\n", ret);
  }
 
+ ssd1803a_spi_close();
+
  return 0;
 }

@@ -36,6 +36,7 @@ extern "C"
 #endif
 
   void ssd1803a_spi_init(void);
+  void ssd1803a_spi_close(void);
 
   SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength);
 

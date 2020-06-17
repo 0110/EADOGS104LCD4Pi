@@ -34,6 +34,7 @@ typedef enum {
 
 
 spi_implement_ret_t     spi_implement_init(void);
+spi_implement_ret_t     spi_implement_close(void);
 
 /**
  * @brief Send data 

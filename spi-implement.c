@@ -74,6 +74,14 @@ spi_implement_ret_t     spi_implement_init(void)
     return SPI_IMPL_RET_OK;
 }
 
+spi_implement_ret_t     spi_implement_close(void)
+{
+    if (gSpiFd == 0)  {
+        return SPI_IMPL_RET_ERR_OPENDEV;
+    }
+    close(gSpiFd);
+}
+
 spi_implement_ret_t     spi_implement_send(int length, const void *txbuf)
 {
     if (gSpiFd == 0)  {
