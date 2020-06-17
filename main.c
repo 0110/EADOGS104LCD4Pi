@@ -7,17 +7,19 @@
  */
 
 #include <stdio.h>
-#include "spi-implement.h"
+#include "ssd1803a-spi.h"
 
 int main(int argc, char ** argv) {
  
- spi_implement_ret_t ret = spi_implement_init();
+ SSD1803A_RET ret;
 
- if (ret == SPI_IMPL_RET_OK) {
-    /* Kontrollausgabe */
-    printf("SPI-Device.....: Opend\n");
+ ssd1803a_spi_init();
+ 
+ ret = ssd1803a_spi_sendText("Hello World", sizeof("Hello World"));
+ if (ret == SSD1803A_RET_OK) {
+     printf("Display should show 'Hello World'\n");
  } else {
-      printf("SPI-Device.....: %d error code\n", ret);
+     printf("Display returned code %d\n", ret);
  }
 
  return 0;
