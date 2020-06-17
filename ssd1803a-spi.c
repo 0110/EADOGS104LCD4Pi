@@ -7,10 +7,8 @@
  * File was downloaded from https://github.com/0110/WookieController in the branch lcd-SSD1803A
  */
 
-#include "lcd/ssd1803a-spi.h"
-#include "lcd/spi-implement.h"
-
-#include "ch.h"
+#include "ssd1803a-spi.h"
+#include "spi-implement.h"
 
 #define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
 
