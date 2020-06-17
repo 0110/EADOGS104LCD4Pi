@@ -7,8 +7,8 @@
  * File was downloaded from https://github.com/0110/WookieController in the branch lcd-SSD1803A
  */
 
-#include "ssd1803a-spi.h"
 #include "spi-implement.h"
+#include "ssd1803a-spi.h"
 
 #define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
 
@@ -22,6 +22,7 @@
 /******************************************************************************
  * PROTOTYPE
  ******************************************************************************/
+static void sendViaSPI(int RW, int RS, uint8_t data);
 
 /******************************************************************************
  * LOCAL VARIABLES
@@ -31,9 +32,7 @@ static int gRunning = FALSE;
 /******************************************************************************
  * LOCAL FUNCTIONS
  ******************************************************************************/
-
-static void
-sendViaSPI(int RW, int RS, uint8_t data)
+static void sendViaSPI(int RW, int RS, uint8_t data)
 {
   uint8_t transferStore[SPI_TELEGRAM_LENGTH];
   int bit;
@@ -56,7 +55,7 @@ sendViaSPI(int RW, int RS, uint8_t data)
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spi_implement_send(SPI_TELEGRAM_LENGTH, transferStore);
-  chThdSleep(MS2ST(5)); /* give the scheduler some time */
+  spi_delay(5 /*ms*/); /* give the scheduler some time */
 }
 
 /******************************************************************************
@@ -99,7 +98,7 @@ ssd1803a_spi_init(void)
   sendViaSPI(0, 0, 0x0C);
 
   /* Custom initialization */
-  chThdSleep(MS2ST(50)); /* give the LCD some time */
+  spi_delay(50 /*ms*/); /* give the LCD some time */
   sendViaSPI(0, 0, 0x01); /* Clear Display */
   sendViaSPI(0, 0, 0x02); /* Return home */
 
@@ -128,7 +127,7 @@ ssd1803a_spi_sendText(char *s, int textLength)
 
   sendViaSPI(0, 0, 0x01); /* Clear Display */
   sendViaSPI(0, 0, 0x02); /* Return home */
-  chThdSleep(MS2ST(5)); /* give the LCD some time */
+  spi_delay(5 /*ms*/); /* give the LCD some time */
 
   /* Converting the data according to ROM A */
   for (i = 0; i < textLength; i++)
@@ -192,7 +191,7 @@ ssd1803a_spi_sendText(char *s, int textLength)
           /*FIXME simple copy the value, as we have no idea how to convert it (or currently not implemented) */
           sendViaSPI(0, 1, s[i]);
       }
-      chThdSleep(MS2ST(5)); /* give the LCD some time */
+      spi_delay(5 /* ms */); /* give the LCD some time */
   }
   return SSD1803A_RET_OK;
 }

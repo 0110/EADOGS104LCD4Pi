@@ -10,6 +10,8 @@
 #ifndef SPI_IMPLEMENT_H_
 #define SPI_IMPLEMENT_H_
 
+#include <stdint.h>
+#include <stdlib.h>
 
 #ifndef TRUE
 #define TRUE	1
@@ -33,7 +35,16 @@ typedef enum {
 
 spi_implement_ret_t     spi_implement_init(void);
 
-spi_implement_ret_t     spi_implement_send(int n, const void *txbuf);
+/**
+ * @brief Send data 
+ * 
+ * @param length	length of data to sent
+ * @param txbuf 	buffer with the data to send
+ * @return spi_implement_ret_t 
+ */
+spi_implement_ret_t     spi_implement_send(int length, const void *txbuf);
+
+spi_implement_ret_t     spi_delay(int milliseconds);
 
 /*@}*/
 
