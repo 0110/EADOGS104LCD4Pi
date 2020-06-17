@@ -27,6 +27,20 @@ With the following content: `SUBSYSTEM=="spidev", GROUP="users", MODE="0660"`
 After restarting the service, everything is prepared:
 `sudo service udev restart` 
 
+## Dependencies
+* build-essentials
+* cmake
+
+## Build
+Go into the bulid folder and use ``cmake`` and ``make`` to build the tool.
+
+As shown here:
+```
+cd build
+cmake ../
+make
+```
+
 # Sources
 * [SPI at Raspberry (in German)](http://www.netzmafia.de/skripten/hardware/RasPi/RasPi_SPI.html)
 * [GPIOs of Raspberry](https://pinout.xyz/pinout/pin19_gpio10)
