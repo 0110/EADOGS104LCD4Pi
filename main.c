@@ -15,6 +15,9 @@
 
 #define MAX_CHARACTERS	(20*4)
 
+#define GPIO_LCDBACKLIGHT	18
+#define GPIO_LCDBACKLIGHT_STR	"18"
+
 const char *argp_program_version = "0.1";
 const char *argp_program_bug_address = "Ollo@raspberry.local";
 static char doc[] = "Control your EADOGS104 LCD from a raspberry pi";
@@ -53,8 +56,25 @@ int main(int argc, char ** argv) {
  argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
  /* main programm */
-
  ssd1803a_spi_init();
+
+ /* activate backlight */
+ FILE *sysfs_handle = NULL;
+ if ((sysfs_handle = fopen("/sys/class/gpio/export", "w")) != NULL)
+ {
+    fwrite(GPIO_LCDBACKLIGHT_STR "\0", sizeof(char), 2, sysfs_handle);
+    fclose(sysfs_handle);
+ }
+ if ((sysfs_handle = fopen("/sys/class/gpio/gpio"GPIO_LCDBACKLIGHT_STR "/direction", "w")) != NULL)
+ {
+    fwrite("out\0", sizeof(char), 4, sysfs_handle);
+    fclose(sysfs_handle);
+ }
+ if ((sysfs_handle = fopen("/sys/class/gpio/gpio" GPIO_LCDBACKLIGHT_STR "/value", "w")) != NULL)
+ {
+    fwrite("1\0", sizeof(char), 2, sysfs_handle);
+    fclose(sysfs_handle);
+ }
 
  if (arguments.useBigChar) {
 	ssd1803a_spi_setLines(2); /* use only 2 of 4 lines */

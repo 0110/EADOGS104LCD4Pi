@@ -13,6 +13,9 @@ SPI-GPIOs at the Raspberry:
 * GPIO11 SCLK
 * GPIO8  CE0
 
+Additional commands:
+* GPIO18	LCD backlight control
+
 ## Display
 
 EA DOGS104-A including *SSD1803A* controller
