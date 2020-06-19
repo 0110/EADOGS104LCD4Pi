@@ -107,12 +107,26 @@ ssd1803a_spi_init(void)
   sendViaSPI(0, 1, 0x04); /* Rom Selection Command 2/2 (Selected ROMC) */
   sendViaSPI(0, 0, 0x3A); /* Function Set */
 
-  //sendViaSPI(0,0,0x3A); /* Function Set */
-  /* DEMO gigantic characters */
-  //sendViaSPI(0,0,0x38); /* two big lines  0 0 1 1 | 1 0 0 0  */
-  //sendViaSPI(0,0,0x3A); /* Function Set */
-
+  sendViaSPI(0,0,0x3A); /* Function Set */
   gRunning = TRUE;
+}
+
+SSD1803A_RET ssd1803a_spi_setLines(int amountOfLines)
+{
+  switch(amountOfLines) {
+	case 2:
+	  /* Gigantic characters */
+	  sendViaSPI(0,0,0x38); /* two big lines  0 0 1 1 | 1 0 0 0  */
+	  sendViaSPI(0,0,0x3A); /* Function Set */
+	  sendViaSPI(0,0,0x1B); /* 2 Lines */
+	  sendViaSPI(0,0,0x3C); /* Function set: RE=0, DH=1 */
+	  break;
+	case 4:
+	  /* Extended funcion set  0       0       0       0       0        0      1       0       0       1       $09     4 line display*/
+  	 sendViaSPI(0, 0, 0x09);
+ 	break;
+  }
+  return SSD1803A_RET_OK;
 }
 
 void ssd1803a_spi_close(void) {

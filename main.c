@@ -9,18 +9,58 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
+#include <argp.h>
 #include "ssd1803a-spi.h"
 
 #define MAX_CHARACTERS	(20*4)
 
+const char *argp_program_version = "0.1";
+const char *argp_program_bug_address = "Ollo@raspberry.local";
+static char doc[] = "Control your EADOGS104 LCD from a raspberry pi";
+static char args_doc[] = "EADIGS104...";
+static struct argp_option options[] = { 
+	{ "stdin", 's', 0, 0, "Read input to display from stdin"},
+	{ "big", 'b', 0, 0, "Show 2 lines with 10 characters each."},
+	{ 0 } 
+};
+
+struct arguments {
+ bool useStdin;
+ bool useBigChar;
+};
+
+static error_t parse_opt(int key, char *arg, struct argp_state *state) {
+    struct arguments *arguments = state->input;
+    switch (key) {
+	case 's': arguments->useStdin = true; break;
+	case 'b': arguments->useBigChar = true; break;
+	case ARGP_KEY_ARG: return 0;
+	default: return ARGP_ERR_UNKNOWN;
+    }   
+    return 0;
+}
+
+static struct argp argp = { options, parse_opt, args_doc, doc, 0, 0, 0 };
+
 int main(int argc, char ** argv) {
  
  SSD1803A_RET ret;
+ struct arguments arguments;
+ arguments.useStdin = false;
+ arguments.useBigChar = false;
+ /* parese arguments */
+ argp_parse(&argp, argc, argv, 0, 0, &arguments);
+
+ /* main programm */
 
  ssd1803a_spi_init();
+
+ if (arguments.useBigChar) {
+	ssd1803a_spi_setLines(2); /* use only 2 of 4 lines */
+ }
  
- if (argc >= 2) {
-	if (strcmp(argv[1], "-s") == 0) {
+ if (arguments.useStdin) {
 		char buffer[MAX_CHARACTERS];
 		int readbytes=read(STDIN_FILENO, buffer, MAX_CHARACTERS);
 		ret = ssd1803a_spi_sendText(buffer, readbytes);
@@ -32,9 +72,6 @@ int main(int argc, char ** argv) {
 		} else {
 		     printf("Display returned code %d\n", ret);
 		}
-	} else {
-		printf("Unkown command %s\n", argv[1]);
-	}
  } else {
 	 ret = ssd1803a_spi_sendText("Hello World\0", sizeof("Hello World") - 1);
 	 if (ret == SSD1803A_RET_OK) {

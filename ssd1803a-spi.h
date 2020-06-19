@@ -39,6 +39,7 @@ extern "C"
   void ssd1803a_spi_close(void);
 
   SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength);
+  SSD1803A_RET ssd1803a_spi_setLines(int amountOfLines);
 
 #ifdef __cplusplus
 }
