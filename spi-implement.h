@@ -24,7 +24,7 @@
 /** @addtogroup LCD */
 
 typedef enum {
-	SPI_IMPL_RET_OK,
+	SPI_IMPL_RET_OK = 0,
 	SPI_IMPL_RET_ERROR,
 	SPI_IMPL_RET_ERR_OPENDEV,
 	SPI_IMPL_RET_ERR_BITSIZE,

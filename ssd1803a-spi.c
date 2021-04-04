@@ -65,11 +65,11 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
 SSD1803A_RET
 ssd1803a_spi_init(void)
 {
-
-  if (spi_implement_init() != SPI_IMPL_RET_OK)
+  spi_implement_ret_t ret = spi_implement_init();
+  if (ret != SPI_IMPL_RET_OK)
     {
       gRunning = FALSE;
-      return SSD1803A_RET_NOTINITIALIZED;
+      return ret;
     }
 
   /** The init procedure */
