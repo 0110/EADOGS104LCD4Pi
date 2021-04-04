@@ -56,7 +56,10 @@ int main(int argc, char ** argv) {
  argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
  /* main programm */
- ssd1803a_spi_init();
+ ret = ssd1803a_spi_init();
+ if (ret != SSD1803A_RET_OK) {
+     printf("Initialization returned code %d\n", ret);
+ }
 
  /* activate backlight */
  FILE *sysfs_handle = NULL;

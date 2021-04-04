@@ -62,14 +62,14 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
-void
+SSD1803A_RET
 ssd1803a_spi_init(void)
 {
 
   if (spi_implement_init() != SPI_IMPL_RET_OK)
     {
       gRunning = FALSE;
-      return;
+      return SSD1803A_RET_NOTINITIALIZED;
     }
 
   /** The init procedure */
@@ -109,6 +109,7 @@ ssd1803a_spi_init(void)
 
   sendViaSPI(0,0,0x3A); /* Function Set */
   gRunning = TRUE;
+  return SSD1803A_RET_OK;
 }
 
 SSD1803A_RET ssd1803a_spi_setLines(int amountOfLines)
