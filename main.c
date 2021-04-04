@@ -59,6 +59,9 @@ int main(int argc, char ** argv) {
  ret = ssd1803a_spi_init();
  if (ret != SSD1803A_RET_OK) {
      printf("Initialization returned code %d\n", ret);
+     printf("Was the kernel module loaded?\n");
+     printf("  use >sudo modprobe spi_bcm2835< to do so\n");
+     return 1;
  }
 
  /* activate backlight */
