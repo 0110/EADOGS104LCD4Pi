@@ -22,6 +22,14 @@ EA DOGS104-A including *SSD1803A* controller
 
 # Software
 
+# Linux Kernel
+At kernel 3.18 and newer SPI must be activated in the raspberry in the **/boot/config.txt** by adding the following line:
+`dtparam=spi=on`
+
+Or activate SPI with the **raspi-config** tool.
+
+## Kernel Module
+
 Load the kernel module `sudo modprobe spi_bcm2835`  .
 
 In the folder */etc/udev/rules.d/* generate a file named **51-i2c.rules**.
